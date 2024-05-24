@@ -1,0 +1,162 @@
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<form class="sf_form" id="sf_form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
+    <input type="hidden" name="oid" value="00D6g0000025fMN">
+    <input type="hidden" name="retURL" value="https://xx.nexxera.com/typ-nix-empresas-xfi/">
+
+    <label for="first_name">Nome</label><input required="" id="first_name" maxlength="40" name="first_name" size="20" type="text"><br>
+    <label for="last_name">Sobrenome</label><input required="" id="last_name" maxlength="80" name="last_name" size="20" type="text"><br>
+    <label for="email">E-mail</label><input required="" id="email" maxlength="80" name="email" size="20" type="text"><br>
+    <label for="mobile">Celular</label><input placeholder="(99) 9 9999-9999" id="mobile" required="" maxlength="80" name="mobile" type="text"><br>
+
+    <label for="company">Nome da Empresa</label><input id="company" required="" maxlength="40" name="company" size="20" type="text"><br>
+    CNPJ<input required=""  id="00N4Q00000AuQlL" maxlength="18" name="00N4Q00000AuQlL" size="20" type="text" /><br>
+
+    <!--Pais Brasil fixado, nao alterar--><input id="country_code" name="country_code" type="hidden" value="BR">
+    <!--campanha, nao alterar--><input id="Campaign_ID" name="Campaign_ID" type="hidden" value="701TT00000GUajFYAT">
+    <!--utm_source: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUhtf" name="00N4Q00000BUhtf" type="hidden" value="xfi">
+    <!--utm_medium: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUhte" name="00N4Q00000BUhte" type="hidden" value="geral">
+    <!--utm_campaign: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUhtd" name="00N4Q00000BUhtd" type="hidden" value="nix_empresas">
+    <!--utm_content: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUiId" name="00N4Q00000BUiId" type="hidden" value="oferta_nix">
+    <!--utm_term: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUiIe" name="00N4Q00000BUiIe" type="hidden" value="term">
+    <!--Origem do lead, campo padrao salesforce--><input id="lead_source" name="lead_source" type="hidden" value="Landing Page">
+    <input id="00N6g00000MVCJk"  name="00N6g00000MVCJk" type="hidden" value="Oferta Nix Via XFI"/>
+
+    <script>
+    // Preencher o campo do formulário com a URL completa
+    document.addEventListener('DOMContentLoaded', function() {
+      var fullUrl = window.location.href;
+      document.getElementById('00N6g00000MVCJk').value = fullUrl;
+    });
+
+    document.getElementById('mobile').addEventListener('input', function (e) {
+        var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : x[1] + x[2] + x[3];
+    });
+
+    document.getElementById('00N4Q00000AuQlL').addEventListener('input', function (e) {
+        // Obter o valor atual do campo
+        var inputValue = e.target.value;
+
+        // Remover todos os caracteres não numéricos
+        var numericValue = inputValue.replace(/\D/g, '');
+
+        // Formatando o valor numérico como CNPJ
+        var formattedValue = formatarCNPJ(numericValue);
+
+        // Atualizar o valor do campo
+        e.target.value = formattedValue;
+    });
+
+    function formatarCNPJ(cnpj) {
+        // Aplicar a formatação de CNPJ
+        var formattedCNPJ = '';
+        var cnpjRegex = /^(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})$/;
+        var match = cnpj.match(cnpjRegex);
+        if (match) {
+            formattedCNPJ = !match[2] ? match[1] : match[1] + '.' + match[2];
+            if (match[3]) formattedCNPJ += '.' + match[3];
+            if (match[4]) formattedCNPJ += '/' + match[4];
+            if (match[5]) formattedCNPJ += '-' + match[5];
+        }
+        return formattedCNPJ;
+    }
+
+    function validarCNPJ(cnpj) {
+        cnpj = cnpj.replace(/[^\d]+/g, '');
+
+        if (cnpj.length !== 14) return false;
+
+        // Elimina CNPJs inválidos conhecidos
+        if (/^(\d)\1+$/.test(cnpj)) return false;
+
+        // Valida DVs
+        var tamanho = cnpj.length - 2;
+        var numeros = cnpj.substring(0, tamanho);
+        var digitos = cnpj.substring(tamanho);
+        var soma = 0;
+        var pos = tamanho - 7;
+        for (var i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2) pos = 9;
+        }
+        var resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(0)) return false;
+
+        tamanho = tamanho + 1;
+        numeros = cnpj.substring(0, tamanho);
+        soma = 0;
+        pos = tamanho - 7;
+        for (var i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2) pos = 9;
+        }
+        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+        if (resultado != digitos.charAt(1)) return false;
+
+        return true;
+    }
+
+    document.getElementById('sf_form').addEventListener('submit', function (e) {
+        var cnpjValue = document.getElementById('00N4Q00000AuQlL').value;
+        var numericCnpjValue = cnpjValue.replace(/\D/g, '');
+
+        if (!validarCNPJ(numericCnpjValue)) {
+            alert("O CNPJ inserido é inválido.");
+            e.preventDefault();
+        }
+    });
+
+    document.getElementById("enviarBtn").addEventListener("click", function(event) {
+        // Prevenir o envio padrão do formulário para que possamos validar manualmente
+        event.preventDefault();
+        // Chamando a função para validar e enviar o formulário
+        enviarCadastro();
+    });
+
+    function enviarCadastro() {
+        // Obter os valores dos campos do formulário
+        var nome = document.getElementById("first_name").value;
+        var sobrenome = document.getElementById("last_name").value;
+        var email = document.getElementById("email").value;
+        var nomeEmpresa = document.getElementById("company").value;
+        var cnpj = document.getElementById("00N4Q00000AuQlL").value;
+
+        // Verificar se todos os campos foram preenchidos
+        if (!nome || !sobrenome || !email || !nomeEmpresa || !cnpj) {
+            alert("Cadastro não realizado. Todos os campos são obrigatórios.");
+            return;
+        }
+
+        // Verificar se o CNPJ está no formato esperado
+        var cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+        if (!cnpjRegex.test(cnpj)) {
+            alert("Cadastro não realizado. CNPJ deve estar no formato XX.XXX.XXX/XXXX-XX.");
+            return;
+        }
+
+        // Verificar se o CNPJ é válido
+        if (!validarCNPJ(cnpj.replace(/\D/g, ''))) {
+            alert("Cadastro não realizado. O CNPJ inserido é inválido.");
+            return;
+        }
+
+        // Verificar se o checkbox de política de privacidade está marcado
+        if (!document.getElementById("00N4Q00000BagzR").checked) {
+            alert("Por favor, concorde com a Política de Privacidade para enviar o formulário.");
+            return;
+        }
+
+        // Se todas as validações passarem, envie o formulário
+        document.getElementById("sf_form").submit();
+    }
+    </script>
+
+    <p style="margin: 30px 0 10px 0px;"><input id="00N4Q00000BUjxS" name="00N4Q00000BUjxS" type="checkbox"> Aceito receber notícias/ofertas sobre produtos.</p>
+    <p style="margin: 0 0 30px 0;"><input required="" id="00N4Q00000BagzR" name="00N4Q00000BagzR" type="checkbox"> Ao informar meus dados, eu concordo com a <a style="color:blue" href="https://privacidade.nexxera.com/" target="_blank"><u>Política de Privacidade</u></a>.</p>
+    <input id="enviarBtn" class="bt_enviar_form" type="submit" value="Quero receber um contato" name="submitBtn">
+
+    <br>
+    <small>Todos os campos são obrigatórios.<br>Seus dados estão seguros conosco.</small>
+</form>
