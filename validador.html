@@ -2,8 +2,8 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <form class="sf_form" id="sf_form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
-    <input type="hidden" name="oid" value="00D6g0000025fMN">
-    <input type="hidden" name="retURL" value="https://xx.nexxera.com/typ-nix-empresas-xfi/">
+    <input type="hidden" name="oid" value="xxxxxxxxxxxxxxxx">
+    <input type="hidden" name="retURL" value="https://xxxxxxxxxxx/xxxxxxxxxxx/">
 
     <label for="first_name">Nome</label><input required="" id="first_name" maxlength="40" name="first_name" size="20" type="text"><br>
     <label for="last_name">Sobrenome</label><input required="" id="last_name" maxlength="80" name="last_name" size="20" type="text"><br>
@@ -11,23 +11,14 @@
     <label for="mobile">Celular</label><input placeholder="(99) 9 9999-9999" id="mobile" required="" maxlength="80" name="mobile" type="text"><br>
 
     <label for="company">Nome da Empresa</label><input id="company" required="" maxlength="40" name="company" size="20" type="text"><br>
-    CNPJ<input required=""  id="00N4Q00000AuQlL" maxlength="18" name="00N4Q00000AuQlL" size="20" type="text" /><br>
+    CNPJ<input required=""  id="xxxxxxxxxxxxxxx" maxlength="18" name="xxxxxxxxxxxxxxx" size="20" type="text" /><br>
 
-    <!--Pais Brasil fixado, nao alterar--><input id="country_code" name="country_code" type="hidden" value="BR">
-    <!--campanha, nao alterar--><input id="Campaign_ID" name="Campaign_ID" type="hidden" value="701TT00000GUajFYAT">
-    <!--utm_source: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUhtf" name="00N4Q00000BUhtf" type="hidden" value="xfi">
-    <!--utm_medium: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUhte" name="00N4Q00000BUhte" type="hidden" value="geral">
-    <!--utm_campaign: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUhtd" name="00N4Q00000BUhtd" type="hidden" value="nix_empresas">
-    <!--utm_content: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUiId" name="00N4Q00000BUiId" type="hidden" value="oferta_nix">
-    <!--utm_term: podem alterar aqui para trazer o valor desejado da url--><input id="00N4Q00000BUiIe" name="00N4Q00000BUiIe" type="hidden" value="term">
-    <!--Origem do lead, campo padrao salesforce--><input id="lead_source" name="lead_source" type="hidden" value="Landing Page">
-    <input id="00N6g00000MVCJk"  name="00N6g00000MVCJk" type="hidden" value="Oferta Nix Via XFI"/>
 
     <script>
     // Preencher o campo do formulário com a URL completa
     document.addEventListener('DOMContentLoaded', function() {
       var fullUrl = window.location.href;
-      document.getElementById('00N6g00000MVCJk').value = fullUrl;
+      document.getElementById('xxxxxxxxxxxx').value = fullUrl;
     });
 
     document.getElementById('mobile').addEventListener('input', function (e) {
@@ -35,7 +26,7 @@
         e.target.value = !x[2] ? x[1] : x[1] + x[2] + x[3];
     });
 
-    document.getElementById('00N4Q00000AuQlL').addEventListener('input', function (e) {
+    document.getElementById('xxxxxxxxxxxxx').addEventListener('input', function (e) {
         // Obter o valor atual do campo
         var inputValue = e.target.value;
 
@@ -99,7 +90,7 @@
     }
 
     document.getElementById('sf_form').addEventListener('submit', function (e) {
-        var cnpjValue = document.getElementById('00N4Q00000AuQlL').value;
+        var cnpjValue = document.getElementById('xxxxxxxxxxxxx').value;
         var numericCnpjValue = cnpjValue.replace(/\D/g, '');
 
         if (!validarCNPJ(numericCnpjValue)) {
@@ -121,7 +112,7 @@
         var sobrenome = document.getElementById("last_name").value;
         var email = document.getElementById("email").value;
         var nomeEmpresa = document.getElementById("company").value;
-        var cnpj = document.getElementById("00N4Q00000AuQlL").value;
+        var cnpj = document.getElementById("xxxxxxxxxxx").value;
 
         // Verificar se todos os campos foram preenchidos
         if (!nome || !sobrenome || !email || !nomeEmpresa || !cnpj) {
@@ -143,7 +134,7 @@
         }
 
         // Verificar se o checkbox de política de privacidade está marcado
-        if (!document.getElementById("00N4Q00000BagzR").checked) {
+        if (!document.getElementById("xxxxxxxxxxxxxx").checked) {
             alert("Por favor, concorde com a Política de Privacidade para enviar o formulário.");
             return;
         }
@@ -153,8 +144,8 @@
     }
     </script>
 
-    <p style="margin: 30px 0 10px 0px;"><input id="00N4Q00000BUjxS" name="00N4Q00000BUjxS" type="checkbox"> Aceito receber notícias/ofertas sobre produtos.</p>
-    <p style="margin: 0 0 30px 0;"><input required="" id="00N4Q00000BagzR" name="00N4Q00000BagzR" type="checkbox"> Ao informar meus dados, eu concordo com a <a style="color:blue" href="https://privacidade.nexxera.com/" target="_blank"><u>Política de Privacidade</u></a>.</p>
+    <p style="margin: 30px 0 10px 0px;"><input id="xxxxxxxxxxxxx" name="xxxxxxxxxxxxxx" type="checkbox"> Aceito receber notícias/ofertas sobre produtos.</p>
+    <p style="margin: 0 0 30px 0;"><input required="" id="xxxxxxxxxxxx" name="xxxxxxxxxxxxxx" type="checkbox"> Ao informar meus dados, eu concordo com a <a style="color:blue" href="xxxxxxxxxxxxxxx" target="_blank"><u>Política de Privacidade</u></a>.</p>
     <input id="enviarBtn" class="bt_enviar_form" type="submit" value="Quero receber um contato" name="submitBtn">
 
     <br>
